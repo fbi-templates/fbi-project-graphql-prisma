@@ -1,7 +1,7 @@
 {
   "name": "fbi-project-graphql-prisma",
   "version": "1.0.1",
-  "description": "GraphQL API Server template",
+  "description": "GraphQL API Server and Prisma ORM project template",
   "main": "index.js",
   "scripts": {
     "start": "pm2 start pm2.json",
