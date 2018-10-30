@@ -1,6 +1,6 @@
 {
   "name": "fbi-project-graphql-prisma",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GraphQL API Server and Prisma ORM project template",
   "main": "index.js",
   "scripts": {
