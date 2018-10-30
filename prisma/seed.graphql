@@ -1,0 +1,6 @@
+mutation {
+  # Create first user
+  createUser(data: { name: "Alice" }) {
+    id
+  }
+}
