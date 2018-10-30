@@ -23,9 +23,11 @@ module.exports = {
       typePrefix: '',
       smartTResult: false,
       smartTParent: false,
-      // strictNulls: true,
+      contextType: 'any',
+      strictNulls: true,
       asyncResult: false,
-      requireResolverTypes: false
+      requireResolverTypes: false,
+      generateResolverTypes: false
     }
   },
 

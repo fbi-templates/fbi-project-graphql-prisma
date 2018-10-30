@@ -1,4 +1,6 @@
-const { generateTypeScriptTypes } = require('graphql-schema-typescript')
+const {
+  generateTypeScriptTypes
+} = require('@peak-stone/graphql-schema-typescript')
 const { mkdirp } = ctx.utils.fs
 const { join } = ctx.utils.path
 const { style } = ctx.utils

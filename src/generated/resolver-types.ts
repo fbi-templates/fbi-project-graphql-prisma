@@ -51,7 +51,8 @@ export namespace MutationResolvers {
 export namespace UserResolvers {
   export const defaultResolvers = {
     id: (parent: User) => parent.id,
-    name: (parent: User) => (parent.name === undefined ? null : parent.name)
+    name: (parent: User) => parent.name,
+    email: (parent: User) => parent.email
   }
 
   export type IdResolver = (
@@ -62,6 +63,13 @@ export namespace UserResolvers {
   ) => string | Promise<string>
 
   export type NameResolver = (
+    parent: User,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>
+
+  export type EmailResolver = (
     parent: User,
     args: {},
     ctx: Context,
@@ -77,6 +85,13 @@ export namespace UserResolvers {
     ) => string | Promise<string>
 
     name: (
+      parent: User,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>
+
+    email: (
       parent: User,
       args: {},
       ctx: Context,
