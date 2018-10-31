@@ -7,7 +7,7 @@ const { fs, path, style } = ctx.utils
 
 module.exports = async opts => {
   const input = path.cwd(opts.output)
-  const output = path.cwd(opts.bindingOuput)
+  const output = path.cwd(opts.bindingOutput)
   const args = {
     schema: buildSchema(importSchema(input)),
     inputSchemaPath: input,
@@ -18,6 +18,6 @@ module.exports = async opts => {
   await fs.write(output, code)
 
   ctx.logger.log(
-    `✔ Prisma-binding generated at ${style.green(opts.bindingOuput)}`
+    `✔ Prisma-binding generated at ${style.green(opts.bindingOutput)}`
   )
 }
