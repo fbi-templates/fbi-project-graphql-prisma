@@ -1,13 +1,21 @@
 const { buildSchema } = require('graphql')
 const { fileLoader, mergeTypes } = require('merge-graphql-schemas')
+const logger = ctx.logger
 
 module.exports = (src, onlyTypes) => {
-  const typeDefs = mergeTypes(fileLoader(src), {
-    all: true
-  })
+  try {
+    const typeDefs = mergeTypes(fileLoader(src), {
+      all: true
+    })
 
-  if (onlyTypes) {
-    return typeDefs
+    logger.debug('typeDefs:\n', typeDefs)
+
+    if (onlyTypes) {
+      return typeDefs
+    }
+    return buildSchema(typeDefs)
+  } catch (err) {
+    logger.error(err.message)
+    process.exit(1)
   }
-  return buildSchema(typeDefs)
 }

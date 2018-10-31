@@ -5,7 +5,7 @@ module.exports = {
     model: {
       input: 'prisma/datamodel.prisma',
       output: 'src/generated/prisma.graphql',
-      bindingOuput: 'src/generated/prisma.ts'
+      bindingOutput: 'src/generated/prisma.ts'
     },
     paths: {
       schemaInput: './src/schema/**/*.graphql',
@@ -17,17 +17,6 @@ module.exports = {
       semi: false,
       singleQuote: true,
       trailingComma: 'none'
-    },
-    schemaTypesOptions: {
-      global: false,
-      typePrefix: '',
-      smartTResult: false,
-      smartTParent: false,
-      contextType: 'any',
-      strictNulls: true,
-      asyncResult: false,
-      requireResolverTypes: false,
-      generateResolverTypes: false
     }
   },
 

@@ -57,6 +57,11 @@ type BatchPayload {
   count: Long!
 }
 
+enum GenderEnum {
+  male
+  female
+}
+
 scalar Long
 
 type Mutation {
@@ -100,6 +105,7 @@ type User {
   id: ID!
   name: String!
   email: String
+  gender: GenderEnum!
 }
 
 type UserConnection {
@@ -111,6 +117,7 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String
+  gender: GenderEnum!
 }
 
 type UserEdge {
@@ -125,6 +132,8 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  gender_ASC
+  gender_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -135,6 +144,7 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String
+  gender: GenderEnum!
 }
 
 type UserSubscriptionPayload {
@@ -158,6 +168,7 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
+  gender: GenderEnum
 }
 
 input UserWhereInput {
@@ -203,6 +214,10 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  gender: GenderEnum
+  gender_not: GenderEnum
+  gender_in: [GenderEnum!]
+  gender_not_in: [GenderEnum!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -226,10 +241,15 @@ export type UserOrderByInput =   'id_ASC' |
   'name_DESC' |
   'email_ASC' |
   'email_DESC' |
+  'gender_ASC' |
+  'gender_DESC' |
   'createdAt_ASC' |
   'createdAt_DESC' |
   'updatedAt_ASC' |
   'updatedAt_DESC'
+
+export type GenderEnum =   'male' |
+  'female'
 
 export type MutationType =   'CREATED' |
   'UPDATED' |
@@ -238,11 +258,13 @@ export type MutationType =   'CREATED' |
 export interface UserCreateInput {
   name: String
   email?: String
+  gender: GenderEnum
 }
 
 export interface UserUpdateInput {
   name?: String
   email?: String
+  gender?: GenderEnum
 }
 
 export interface UserWhereInput {
@@ -288,6 +310,10 @@ export interface UserWhereInput {
   email_not_starts_with?: String
   email_ends_with?: String
   email_not_ends_with?: String
+  gender?: GenderEnum
+  gender_not?: GenderEnum
+  gender_in?: GenderEnum[] | GenderEnum
+  gender_not_in?: GenderEnum[] | GenderEnum
   AND?: UserWhereInput[] | UserWhereInput
   OR?: UserWhereInput[] | UserWhereInput
   NOT?: UserWhereInput[] | UserWhereInput
@@ -326,6 +352,7 @@ export interface UserPreviousValues {
   id: ID_Output
   name: String
   email?: String
+  gender: GenderEnum
 }
 
 export interface UserSubscriptionPayload {
@@ -339,6 +366,7 @@ export interface User {
   id: ID_Output
   name: String
   email?: String
+  gender: GenderEnum
 }
 
 export interface UserConnection {

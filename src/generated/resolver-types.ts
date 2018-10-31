@@ -2,6 +2,7 @@
 
 import { GraphQLResolveInfo } from 'graphql'
 type Context = any
+import { GenderEnum } from './schema-types'
 import { User } from './schema-types'
 
 export namespace QueryResolvers {
@@ -51,18 +52,12 @@ export namespace MutationResolvers {
 export namespace UserResolvers {
   export const defaultResolvers = {
     id: (parent: User) => parent.id,
+    email: (parent: User) => (parent.email === undefined ? null : parent.email),
     name: (parent: User) => parent.name,
-    email: (parent: User) => parent.email
+    gender: (parent: User) => parent.gender
   }
 
   export type IdResolver = (
-    parent: User,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>
-
-  export type NameResolver = (
     parent: User,
     args: {},
     ctx: Context,
@@ -76,15 +71,22 @@ export namespace UserResolvers {
     info: GraphQLResolveInfo
   ) => string | null | Promise<string | null>
 
+  export type NameResolver = (
+    parent: User,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>
+
+  export type GenderResolver = (
+    parent: User,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => GenderEnum | Promise<GenderEnum>
+
   export interface Type {
     id: (
-      parent: User,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>
-
-    name: (
       parent: User,
       args: {},
       ctx: Context,
@@ -97,6 +99,20 @@ export namespace UserResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => string | null | Promise<string | null>
+
+    name: (
+      parent: User,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>
+
+    gender: (
+      parent: User,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => GenderEnum | Promise<GenderEnum>
   }
 }
 

@@ -1,5 +1,11 @@
+enum GenderEnum {
+  male
+  female
+}
+
 type User {
   id: ID! @unique
   name: String! @unique
   email: String
+  gender: GenderEnum!
 }
