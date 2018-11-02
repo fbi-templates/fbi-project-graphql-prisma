@@ -1,37 +1,42 @@
-import { GraphQLServer } from 'graphql-yoga'
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas'
-import { logger, loggerMiddleware } from './helpers/logger'
-import { resolvers } from './resolvers'
+import { join } from 'path'
 import { configs } from './configs'
-import { Prisma } from './generated/prisma'
+import { resolvers } from './resolvers'
+import { DB } from './generated/db'
+import { schemaLoader } from './helpers/schema-loader'
+import { logger, loggerMiddleware } from './helpers/logger'
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server'
+import { applyMiddleware } from 'graphql-middleware'
 
-const typeDefs = mergeTypes(fileLoader(`${__dirname}/schema/**/*.graphql`), {
-  all: true
-})
-
-const db = new Prisma({
+const db = new DB({
   endpoint: 'http://localhost:4466',
   debug: true
 })
 
-const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
-  middlewares: [loggerMiddleware],
-  context: (req: any) => ({
-    ...req,
-    db
-  })
-} as any)
+const schemaPaths = join(__dirname, 'schema/**/*.graphql')
 
-server
-  .start(configs.serverOptions, ({ port }) => {
-    logger.info(
-      `🚀 Server ready at http://localhost:${port}${
-        configs.serverOptions.endpoint
-      }`
-    )
+schemaLoader(schemaPaths, true).then(async typeDefs => {
+  const schema = makeExecutableSchema({
+    typeDefs: gql`
+      ${typeDefs}
+    `,
+    resolvers: resolvers as any,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    }
   })
-  .catch(err => {
-    throw err
+  const schemaWithMiddlewares = applyMiddleware(schema, loggerMiddleware)
+
+  const server = new ApolloServer({
+    schema: schemaWithMiddlewares,
+    context: ({ req }: { req: object }) => ({
+      ...req,
+      db
+    }),
+    playground: true
   })
+
+  server.setGraphQLPath(configs.serverOptions.endpoint)
+
+  const { url } = await server.listen(configs.serverOptions.port)
+  logger.info(`🚀 Server ready at ${join(url, configs.serverOptions.endpoint)}`)
+})

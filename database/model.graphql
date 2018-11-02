@@ -1,6 +1,6 @@
 enum GenderEnum {
-  male
-  female
+  MALE
+  FEMALE
 }
 
 type User {
@@ -8,4 +8,11 @@ type User {
   name: String! @unique
   email: String
   gender: GenderEnum!
+  posts: [Post!]!
+}
+
+type Post {
+  id: ID! @unique
+  title: String @unique
+  author: User!
 }

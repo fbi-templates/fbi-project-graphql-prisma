@@ -30,33 +30,46 @@ GraphQL API Server and Prisma ORM project template
 
 ## Usage
 
-### Data access service
+> Database
 
-1. **init database**: start a postgres/mysql database service
-1. **prisma configs**: `./prisma/`
-1. **start prisma service**: `npm run prisma:up`
-1. **install prisma**: `npm i -g prisma`
-1. **deploy datamodel**: `cd prisma && prisma deploy`
-   > Run `prisma deploy` when `prisma/datamodel.prisma` changed
+1. **start database service**: start a postgres database service
+1. **start database access service**: `npm run db:up`
+1. **init database**: `npm i -g prisma && npm run db:init`
 
-### Graphql API service
+> API service
 
-1. **Start development server**
+1. **code generation**:
 
-   ```bash
-   $ fbi s
-   ```
+   1. Generate database schema, database client code and API schema based on database model:
 
-1. Run `fbi g` when `prisma/datamodel.prisma` or `src/schema` changed
+      ```bash
+      fbi gd
+      ```
+
+   1. Edit `src/schema/schema.graphql`: remove `postsConnection` and `usersConnection` lines
+   1. Generate type-safe API resolvers:
+
+      ```bash
+      fbi ga
+      ```
+
+1. **start development server**: `fbi s`
 
 ## Tasks
 
-### `generate`
+### `gen-db`
 
-- Description: Generate 'prisma.graphql', 'prisma binding', 'schema types' and 'resolvers' base on schema, config: `fbi/options.js generate`.
-- Alias: `g`
+- Description: Generate database schema, database client code and API schema based on database model.
+- Alias: `gd`
 - Examples:
-  - `fbi g`
+  - `fbi gd`
+
+### `gen-api`
+
+- Description: Generate type-safe API resolvers.
+- Alias: `ga`
+- Examples:
+  - `fbi ga`
 
 ### `serve`
 

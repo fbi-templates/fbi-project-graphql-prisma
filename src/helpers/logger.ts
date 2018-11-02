@@ -41,13 +41,16 @@ export const loggerMiddleware = async (
   context: any,
   info: any
 ) => {
+  if (root) {
+    return resolve(root, args, context, info)
+  }
+
   logger.debug(
     `Request=> ${info.operation.operation} ${
       info.fieldName
     }, Args=> ${JSON.stringify(args)}`
   )
   const timeStart = Date.now()
-
   const result = await resolve(root, args, context, info)
 
   logger.debug(

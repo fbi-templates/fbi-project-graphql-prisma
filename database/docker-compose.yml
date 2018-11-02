@@ -15,7 +15,7 @@ services:
             connector: postgres
             host:  docker.for.mac.host.internal
             port: 5432
-            database: alpha-app
+            database: alpha-demo2
             user: postgres
             password: pgpass
             migrations: true

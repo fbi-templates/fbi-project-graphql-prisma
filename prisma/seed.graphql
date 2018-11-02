@@ -1,6 +1,0 @@
-mutation {
-  # Create first user
-  createUser(data: { name: "Alice", email: "alice@gmail.com" }) {
-    id
-  }
-}

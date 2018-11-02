@@ -2,16 +2,19 @@ module.exports = {
   tslint: true,
 
   generate: {
-    model: {
-      input: 'prisma/datamodel.prisma',
-      output: 'src/generated/prisma.graphql',
-      bindingOutput: 'src/generated/prisma.ts'
+    db: {
+      modelInput: 'database/model.graphql',
+      modelOutput: 'src/generated/db.graphql',
+      clientOutput: 'src/generated/db.ts',
+      prismaYml: 'database/prisma.yml'
     },
-    paths: {
+    api: {
       schemaInput: './src/schema/**/*.graphql',
+      schemaOutput: './src/schema/schema.graphql',
       schemaTypesOutput: './src/generated/schema-types.ts',
       resolverTypesOutput: './src/generated/resolver-types.ts',
-      resolversOutput: './src/resolvers'
+      resolversOutput: './src/resolvers',
+      cover: false
     },
     prettifyOptions: {
       semi: false,

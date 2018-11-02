@@ -1,16 +1,16 @@
 const { TypescriptGenerator } = require('graphql-binding')
-const schemaImporter = require('./schema-importer')
+const schemaLoader = require('./schema-loader')
 const { mkdirp, write } = ctx.utils.fs
-const { join, cwd } = ctx.utils.path
+const { cwd } = ctx.utils.path
 const { style } = ctx.utils
 
 module.exports = async opts => {
-  await mkdirp(opts.paths.schemaTypesOutput)
-  const schema = schemaImporter(join(process.cwd(), opts.paths.schemaInput))
+  await mkdirp(opts.schemaTypesOutput)
+  const schema = await schemaLoader(cwd(opts.schemaInput))
   const typescriptGenerator = new TypescriptGenerator({
     schema,
-    inputSchemaPath: opts.paths.schemaInput,
-    outputBindingPath: opts.paths.schemaTypesOutput
+    inputSchemaPath: opts.schemaInput,
+    outputBindingPath: opts.schemaTypesOutput
   })
 
   typescriptGenerator.scalarMapping = {
@@ -25,9 +25,9 @@ module.exports = async opts => {
 
   const types = typescriptGenerator.renderTypes()
 
-  await write(cwd(opts.paths.schemaTypesOutput), types)
+  await write(cwd(opts.schemaTypesOutput), types)
 
   ctx.logger.log(
-    `✔ Schema interface definitons generated at ${style.green(opts.paths.schemaTypesOutput)}`
+    `✔ API Schema types generated at ${style.green(opts.schemaTypesOutput)}`
   )
 }
