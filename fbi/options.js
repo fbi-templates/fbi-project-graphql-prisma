@@ -11,7 +11,6 @@ module.exports = {
     api: {
       schemaInput: './src/schema/**/*.graphql',
       schemaOutput: './src/schema/schema.graphql',
-      schemaTypesOutput: './src/generated/schema-types.ts',
       resolverTypesOutput: './src/generated/resolver-types.ts',
       resolversOutput: './src/resolvers',
       cover: false
@@ -19,7 +18,10 @@ module.exports = {
     prettifyOptions: {
       semi: false,
       singleQuote: true,
-      trailingComma: 'none'
+      trailingComma: 'none',
+      parser: 'babylon',
+      proseWrap: 'never',
+      printWidth: 100
     }
   },
 

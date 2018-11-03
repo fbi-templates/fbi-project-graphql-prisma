@@ -16,7 +16,7 @@ module.exports = async (modelInput, modelOutput, schemaOutput, cover) => {
   ctx.logger.debug('modelTypes:\n', modelTypes)
 
   // const validTypes = ['Query', 'Mutation', 'Subscription'].concat(
-  const validTypes = ['Query', 'Mutation']
+  const validTypes = ['Query', 'Mutation', 'Subscription']
   // const validTypes = ['Query', 'Mutation'].concat(
   //   modelTypes.filter(t => !t.isEnum).map(({ name }) => name)
   // )

@@ -1,5 +1,5 @@
-const generateAPISchemaTypes = require('./codegen/generate-api-schema-types')
 const generateApiResolvers = require('./codegen/generate-api-resolvers')
+const generateApiResolverTypes = require('./codegen/generate-api-resolvers-types')
 const logger = ctx.logger
 const opts = ctx.options
 
@@ -10,14 +10,17 @@ module.exports = async () => {
     )
   }
 
-  logger.debug('4...generateAPISchemaTypes')
-  await generateAPISchemaTypes(opts.generate.api)
+  logger.debug('4...generateApiResolverTypes')
+  await generateApiResolverTypes(
+    opts.generate.api,
+    opts.generate.prettifyOptions
+  )
 
   if (
     opts.generate.api.resolverTypesOutput &&
     opts.generate.api.resolversOutput
   ) {
     logger.debug('5...generateApiResolvers')
-    await generateApiResolvers(opts.generate.api, opts.prettifyOptions)
+    await generateApiResolvers(opts.generate.api, opts.generate.prettifyOptions)
   }
 }

@@ -38,21 +38,24 @@
     "@types/aws-lambda": "8.10.15",
     "@types/globby": "8.0.0",
     "@types/graphql": "^14.0.3",
-    "@types/node": "10.12.1",
+    "@types/node": "10.12.2",
     "@types/ws": "6.0.1",
     "deepmerge": "2.2.1",
     "fs-extra": "7.0.0",
     "globby": "8.0.1",
     "graphql-binding": "2.2.6",
+    "graphql-code-generator": "^0.13.0",
+    "graphql-codegen-typescript-resolvers-template": "^0.13.0",
     "graphql-import": "0.7.1",
     "js-yaml": "3.12.0",
     "nodemon": "1.18.5",
+    "prettier": "1.14.3",
     "prisma": "1.19.3",
     "prisma-generate-schema": "1.19.3",
     "rimraf": "2.6.2",
     "tslint": "5.11.0",
     "tslint-config-standard": "8.0.1",
-    "typescript": "3.1.5"
+    "typescript": "3.1.6"
   },
   "fbi": {
     "template": {
