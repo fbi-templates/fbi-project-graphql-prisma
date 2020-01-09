@@ -8,9 +8,7 @@ export const logger = winston.createLogger({
     winston.format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss.SSS'
     }),
-    winston.format.printf(
-      info => `[${info.timestamp}] ${info.level}: ${info.message}`
-    )
+    winston.format.printf(info => `[${info.timestamp}] ${info.level}: ${info.message}`)
   ),
   transports: [
     new winston.transports.Console(),
@@ -46,15 +44,11 @@ export const loggerMiddleware = async (
   }
 
   logger.debug(
-    `Request=> ${info.operation.operation} ${
-      info.fieldName
-    }, Args=> ${JSON.stringify(args)}`
+    `Request=> ${info.operation.operation} ${info.fieldName}, Args=> ${JSON.stringify(args)}`
   )
   const timeStart = Date.now()
   const result = await resolve(root, args, context, info)
 
-  logger.debug(
-    `Response(${Date.now() - timeStart}ms)=> ${JSON.stringify(result)}`
-  )
+  logger.debug(`Response(${Date.now() - timeStart}ms)=> ${JSON.stringify(result)}`)
   return result
 }

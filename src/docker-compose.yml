@@ -1,0 +1,13 @@
+version: '3'
+services:
+  ms-services:
+    build: .
+    container_name: ${CONTAINER_NAME}
+    env_file: './.env'
+    ports:
+      - '${API_EXPOSE_PORT}:${API_PORT}'
+    extra_hosts:
+      docker_host_ip: ${DOCKER_HOST_IP}
+    environment:
+      DOCKER_HOST_IP: ${DOCKER_HOST_IP}
+# DOCKER_HOST_IP=docker.for.mac.localhost docker-compose up -d

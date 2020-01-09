@@ -1,13 +1,14 @@
 import { join } from 'path'
+import * as url from 'url'
 import { configs } from './configs'
-import { resolvers } from './resolvers'
-import { DB } from './generated/db'
+import { resolvers } from './resolvers/index'
+import { Prisma } from './generated/db'
 import { schemaLoader } from './helpers/schema-loader'
 import { logger, loggerMiddleware } from './helpers/logger'
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server'
 import { applyMiddleware } from 'graphql-middleware'
 
-const db = new DB({
+const db = new Prisma({
   endpoint: 'http://localhost:4466',
   debug: true
 })
@@ -37,6 +38,7 @@ schemaLoader(schemaPaths, true).then(async typeDefs => {
 
   server.setGraphQLPath(configs.serverOptions.endpoint)
 
-  const { url } = await server.listen(configs.serverOptions.port)
-  logger.info(`🚀 Server ready at ${join(url, configs.serverOptions.endpoint)}`)
+  const ret = await server.listen(configs.serverOptions.port)
+  logger.info(`🚀 Server ready at ${url.resolve(ret.url, configs.serverOptions.endpoint)}`)
+  logger.info(`subscriptions url: ${ret.subscriptionsUrl}`)
 })

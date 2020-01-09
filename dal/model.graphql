@@ -4,7 +4,7 @@ enum GenderEnum {
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @id
   name: String! @unique
   email: String
   gender: GenderEnum!
@@ -12,7 +12,7 @@ type User {
 }
 
 type Post {
-  id: ID! @unique
+  id: ID! @id
   title: String @unique
   author: User!
 }

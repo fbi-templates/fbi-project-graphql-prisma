@@ -1,9 +1,10 @@
 const { TypescriptGenerator } = require('prisma-client-lib')
 
 module.exports = class PrismaClientGenerator extends TypescriptGenerator {
-  constructor ({ schema, typeDefsRelativePath }) {
+  constructor ({ schema, typeDefsRelativePath, internalTypes }) {
     super({
-      schema
+      schema,
+      internalTypes
     })
     this.typeDefsRelativePath = typeDefsRelativePath
   }
@@ -13,6 +14,8 @@ module.exports = class PrismaClientGenerator extends TypescriptGenerator {
     ${this.renderImports()}
 
     ${this.renderAtLeastOne()}
+
+    ${this.generator === 'typescript' && this.renderMaybe()}
 
     export interface Exists {\n${this.renderExists()}\n}
 
@@ -26,19 +29,21 @@ module.exports = class PrismaClientGenerator extends TypescriptGenerator {
 
     ${this.exportPrisma ? 'export' : ''} interface ${this.prismaInterface} {
       $exists: Exists;
-      $graphql: <T ${this.genericsDelimiter} any>(query: string, variables?: {[key: string]: any}) => Promise<T>;
+      $graphql: <T ${
+        this.genericsDelimiter
+      } any>(query: string, variables?: {[key: string]: any}) => Promise<T>
 
       /**
        * Queries
       */
 
-    ${this.renderQueries()};
+    ${this.renderQueries()}
 
       /**
        * Mutations
       */
 
-    ${this.renderMutations()};
+    ${this.renderMutations()}
 
 
       /**
@@ -50,7 +55,7 @@ module.exports = class PrismaClientGenerator extends TypescriptGenerator {
     }
 
     export interface Subscription {
-    ${this.renderSubscriptions()};
+    ${this.renderSubscriptions()}
     }
 
     ${this.renderClientConstructor}
@@ -62,10 +67,18 @@ module.exports = class PrismaClientGenerator extends TypescriptGenerator {
     ${this.renderTypes()}
 
     /**
+     * Model Metadata
+    */
+
+    ${this.renderModels()}
+
+    /**
      * Type Defs
     */
 
-    const typeDefs = readFileSync(join(__dirname, '${this.typeDefsRelativePath}'), 'utf8')
+    const typeDefs = readFileSync(join(__dirname, '${
+      this.typeDefsRelativePath
+    }'), 'utf8')
 
     /**
      * Exports
@@ -81,42 +94,8 @@ module.exports = class PrismaClientGenerator extends TypescriptGenerator {
 
       import { join } from 'path'
       import { readFileSync } from 'fs'
-      import { DocumentNode, GraphQLSchema } from 'graphql'
-      import { IResolvers } from 'graphql-tools/dist/Interfaces'
-      import { Client as BaseClient, BaseClientOptions } from 'prisma-client-lib'
-    `
-  }
-  renderPrismaClassArgs (options) {
-    let endpointString = ''
-    let secretString = ''
-    if (options) {
-      if (options.endpoint) {
-        endpointString = options.endpoint
-          ? `, endpoint: ${options.endpoint}`
-          : ''
-      }
-      if (options.secret) {
-        secretString = options.secret ? `, secret: ${options.secret}` : ''
-      }
-    }
-
-    return `{typeDefs${endpointString}${secretString}}`
-  }
-  renderExports (options) {
-    const args = this.renderPrismaClassArgs(options)
-    return `
-      export interface PrismaClientOptions extends BaseClientOptions {
-        typeDefs ? : string
-      }
-
-      export class DB extends BaseClient {
-        constructor(options: PrismaClientOptions) {
-          super({
-            ...${args},
-            ...options
-          })
-        }
-      }
+      import { DocumentNode } from 'graphql'
+      import { makePrismaClientClass, BaseClientOptions, Model } from 'prisma-client-lib'
     `
   }
 }

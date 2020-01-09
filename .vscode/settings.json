@@ -1,0 +1,71 @@
+{
+  // Plugins:
+  // vetur
+  // prettier
+  // prettier-standard
+  // standardjs
+  // JS "Standard" Linter
+
+  // common
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.wordWrapColumn": 100,
+  "files.autoSave": "onFocusChange",
+
+  /** ======= Start important! */
+  "files.associations": {
+    "*.wpy": "vue",
+    "*.css": "scss",
+    "*.prisma": "graphql"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "numso.prettier-standard-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // standard
+  "standard.enable": true,
+  "standard.autoFixOnSave": true,
+  // prettier
+  "prettier.semi": false,
+  "prettier.printWidth": 100,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none",
+  "prettier.jsxSingleQuote": false,
+  // vetur
+  "vetur.validation.style": false,
+  "vetur.format.styleInitialIndent": true,
+  "vetur.format.scriptInitialIndent": true,
+  "vetur.format.options.tabSize": 2,
+  "vetur.format.options.useTabs": false,
+  "vetur.format.defaultFormatterOptions": {
+    "prettyhtml": {
+      "printWidth": 100,
+      "sortAttributes": true
+    },
+    "prettier": {
+      "semi": false,
+      "printWidth": 100,
+      "singleQuote": true,
+      "trailingComma": "none"
+    }
+  }
+  /** ======= End important! */
+}

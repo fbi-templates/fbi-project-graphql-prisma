@@ -1,27 +1,30 @@
-const { generate } = require('graphql-code-generator')
-const prettier = require('prettier')
+const { codegen } = require('@graphql-codegen/core')
+const typescriptPlugin = require('@graphql-codegen/typescript')
+const typescriptResolversPlugin = require('@graphql-codegen/typescript-resolvers')
+const { schemaLoader } = require('./schema-loader')
 const { fs, path, style } = ctx.utils
 
 module.exports = async (api, prettifyOptions) => {
-  const ret = await generate({
-    schema: path.cwd(api.schemaInput),
-    out: path.cwd(api.resolverTypesOutput),
-    template: 'graphql-codegen-typescript-resolvers-template',
-    overwrite: true,
-    silent: true
-  })
+  const { ast } = schemaLoader(path.cwd(api.schemaInput))
+  const config = {
+    filename: path.cwd(api.resolverTypesOutput),
+    schema: ast,
+    plugins: [
+      {
+        typescript: {} // Here you can pass configuration to the plugin
+      },
+      {
+        typescriptResolvers: {}
+      }
+    ],
+    pluginMap: {
+      typescript: typescriptPlugin,
+      typescriptResolvers: typescriptResolversPlugin
+    }
+  }
 
-  // const formated = prettier.format(ret[0].content, {
-  //   semi: false,
-  //   singleQuote: true,
-  //   trailingComma: 'none',
-  //   parser: 'typescript',
-  //   proseWrap: 'never',
-  //   printWidth: 100
-  // })
-
-  // await fs.write(path.cwd(api.resolverTypesOutput), formated)
-
+  const output = await codegen(config)
+  await fs.write(path.cwd(api.resolverTypesOutput), output)
   ctx.logger.log(
     `✔ API Resolver types generated at ${style.green(api.resolverTypesOutput)}`
   )

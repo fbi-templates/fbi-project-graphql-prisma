@@ -43,27 +43,62 @@ module.exports = async (src, dist, opts) => {
 
   // package.json
   if (opts.copy['package.json']) {
-    const pkgPath = 'package.json'
-    const pkgDistPath = join(dist, 'package.json')
-    const pkgsExist = await fs.pathExists(pkgPath)
-    if (pkgsExist) {
-      const pkg = require(join(process.cwd(), pkgPath))
+    const from = 'package.json'
+    const to = join(dist, 'package.json')
+    const exist = await fs.pathExists(from)
+    if (exist) {
+      const pkg = require(join(cwd, from))
       delete pkg.devDependencies
-      await fs.outputJson(pkgDistPath, pkg, {
+      await fs.outputJson(to, pkg, {
         spaces: '  '
       })
-      ctx.logger.log('copy:', pkgPath, '-->', relative(cwd, pkgDistPath))
+      ctx.logger.log('copy:', from, '-->', relative(cwd, to))
     }
   }
 
+  // if (opts.copy['package.json']) {
+  //   const pkgPath = 'package.json'
+  //   const pkgDistPath = join(dist, 'package.json')
+  //   const pkgsExist = await fs.pathExists(pkgPath)
+  //   if (pkgsExist) {
+  //     const pkg = require(join(process.cwd(), pkgPath))
+  //     delete pkg.devDependencies
+  //     await fs.outputJson(pkgDistPath, pkg, {
+  //       spaces: '  '
+  //     })
+  //     ctx.logger.log('copy:', pkgPath, '-->', relative(cwd, pkgDistPath))
+  //   }
+  // }
+
   // node_modules
   if (opts.copy['node_modules']) {
-    const nmPath = 'node_modules'
-    const nmDistPath = join(dist, 'node_modules')
-    const nmsExist = await fs.pathExists(nmPath)
-    if (nmsExist) {
-      await fs.copy(nmPath, nmDistPath)
-      ctx.logger.log('copy:', nmPath, '-->', relative(cwd, nmDistPath))
+    const from = 'node_modules'
+    const to = join(dist, 'node_modules')
+    const exist = await fs.pathExists(from)
+    if (exist) {
+      await fs.copy(from, to)
+      ctx.logger.log('copy:', from, '-->', relative(cwd, to))
+    }
+  }
+
+  // if (opts.copy['node_modules']) {
+  //   const nmPath = 'node_modules'
+  //   const nmDistPath = join(dist, 'node_modules')
+  //   const nmsExist = await fs.pathExists(nmPath)
+  //   if (nmsExist) {
+  //     await fs.copy(nmPath, nmDistPath)
+  //     ctx.logger.log('copy:', nmPath, '-->', relative(cwd, nmDistPath))
+  //   }
+  // }
+
+  // dal folder
+  if (opts.copy['dal']) {
+    const from = 'dal'
+    const to = join(dist, 'dal')
+    const exist = await fs.pathExists(from)
+    if (exist) {
+      await fs.copy(from, to)
+      ctx.logger.log('copy:', from, '-->', relative(cwd, to))
     }
   }
 }

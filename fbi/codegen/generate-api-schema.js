@@ -12,7 +12,7 @@ module.exports = async (modelInput, modelOutput, schemaOutput, cover) => {
   const modelInputString = await read(modelInputPath)
   const modelOutputString = await read(modelOutputPath)
 
-  const modelTypes = parseInternalTypes(modelInputString)
+  const modelTypes = parseInternalTypes(modelInputString, 'postgres')
   ctx.logger.debug('modelTypes:\n', modelTypes)
 
   // const validTypes = ['Query', 'Mutation', 'Subscription'].concat(
@@ -32,7 +32,10 @@ module.exports = async (modelInput, modelOutput, schemaOutput, cover) => {
     }
   }
 
-  const imports = `# import * from '${relative(dirname(schemaOutputPath), modelOutputPath)}'\n\n`
+  const imports = `# import * from '${relative(
+    dirname(schemaOutputPath),
+    modelOutputPath
+  )}'\n\n`
 
   const schemaString = imports + matchedArr.join('\n\n')
 
@@ -46,6 +49,8 @@ module.exports = async (modelInput, modelOutput, schemaOutput, cover) => {
   await write(schemaOutputPath, schemaString)
 
   ctx.logger.log(
-    `✔ API schema generated at ${style.green(relative(process.cwd(), schemaOutputPath))}`
+    `✔ API schema generated at ${style.green(
+      relative(process.cwd(), schemaOutputPath)
+    )}`
   )
 }

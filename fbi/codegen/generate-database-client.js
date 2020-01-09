@@ -3,6 +3,8 @@ const { buildSchema } = require('graphql')
 const { importSchema } = require('graphql-import')
 const PrismaClientGenerator = require('./prisma-client-generator')
 const yaml = require('js-yaml')
+const { DatabaseType, IGQLType } = require('prisma-datamodel')
+const { parseInternalTypes } = require('prisma-generate-schema')
 const { fs, path, style } = ctx.utils
 
 module.exports = async (opts, prettifyOptions, prismaYml) => {
@@ -13,10 +15,14 @@ module.exports = async (opts, prettifyOptions, prismaYml) => {
     dirname(opts.clientOutput),
     opts.modelOutput
   )
+  const modelString = await fs.read(path.cwd(opts.modelInput))
+  const internalTypes = parseInternalTypes(modelString, DatabaseType.postgres)
+    .types
 
   const generator = new PrismaClientGenerator({
     schema,
-    typeDefsRelativePath
+    typeDefsRelativePath,
+    internalTypes
   })
 
   let endpoint = "'http://localhost:4466'"

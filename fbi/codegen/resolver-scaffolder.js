@@ -1,10 +1,4 @@
-const {
-  parse,
-  isScalarType,
-  isEnumType,
-  isUnionType,
-  visit
-} = require('graphql')
+const { isScalarType, isEnumType, isUnionType, visit } = require('graphql')
 const prettier = require('prettier')
 const { schemaLoader } = require('./schema-loader')
 
@@ -35,7 +29,7 @@ class ResolverScaffolder {
 
     // body
     for (let key of keys) {
-      str += `\n\nconst ${key}: ${key}Resolvers.Resolvers = {
+      str += `\n\nconst ${key}: ${key}Resolvers = {
       `
 
       const fields = []
@@ -128,7 +122,7 @@ class ResolverScaffolder {
         semi: false,
         singleQuote: true,
         trailingComma: 'none',
-        parser: 'babylon',
+        parser: 'babel',
         proseWrap: 'never',
         printWidth: 100
       }
@@ -139,8 +133,8 @@ class ResolverScaffolder {
     return type.name
       ? type.name.value
       : type.type && type.type.name
-          ? type.type.name.value
-          : type.type.type.name.value
+      ? type.type.name.value
+      : type.type.type.name.value
   }
 
   validType (name) {

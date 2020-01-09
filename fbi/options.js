@@ -3,10 +3,10 @@ module.exports = {
 
   generate: {
     db: {
-      modelInput: 'database/model.graphql',
+      modelInput: 'dal/model.graphql',
       modelOutput: 'src/generated/db.graphql',
       clientOutput: 'src/generated/db.ts',
-      prismaYml: 'database/prisma.yml'
+      prismaYml: 'dal/prisma.yml'
     },
     api: {
       schemaInput: './src/schema/**/*.graphql',
@@ -19,7 +19,7 @@ module.exports = {
       semi: false,
       singleQuote: true,
       trailingComma: 'none',
-      parser: 'babylon',
+      parser: 'babel',
       proseWrap: 'never',
       printWidth: 100
     }
@@ -39,8 +39,9 @@ module.exports = {
 
   // file or directories to copy (Destination: 'dist')
   copy: {
+    ignore: ['**/*.{js,ts}', '.DS_Store', 'configs/pm2-*.json', 'types/**/*'],
     'package.json': true,
     node_modules: false,
-    ignore: ['**/*.{js,ts}', '.DS_Store', 'configs/pm2-*.json', 'types/**/*']
+    dal: 'dal'
   }
 }

@@ -23,18 +23,19 @@ export const schemaLoader = async (src: string, onlyTypes?: boolean) => {
         for (let row of rawModules) {
           const importFrom = path.join(path.dirname(s.path), row.from)
           if (!imports.includes(importFrom)) {
-            imports.push(
-              `# import ${row.imports.join(',')} from '${importFrom}'`
-            )
+            imports.push(`# import ${row.imports.join(',')} from '${importFrom}'`)
           }
         }
       }
     })
 
     // merge types
-    const mergedContent = mergeTypes(schemas.map(s => s.content), {
-      all: true
-    })
+    const mergedContent = mergeTypes(
+      schemas.map(s => s.content),
+      {
+        all: true
+      }
+    )
 
     if (!mergedContent) {
       return ''
@@ -43,7 +44,6 @@ export const schemaLoader = async (src: string, onlyTypes?: boolean) => {
     // import graphql modules
     const contentAndImports = imports.join('\n') + '\n' + mergedContent
     const ret = importSchema(contentAndImports)
-    // console.log('ret:', ret)
 
     // return raw or schema
     return onlyTypes ? ret : buildSchema(ret)

@@ -1,0 +1,26 @@
+version: '3'
+services:
+  my-app-dal:
+    image: prismagraphql/prisma:${PRISMA_VERSION}
+    container_name: ${CONTAINER_NAME}
+    env_file: './.env'
+    restart: always
+    ports:
+      - '${DAL_PORT}:${DAL_ORI_PORT}'
+    environment:
+      PRISMA_CONFIG: |
+        port: ${DAL_ORI_PORT}
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            host: ${DOCKER_HOST_IP}
+            port: ${DB_PORT}
+            database: ${DB_NAME}
+            user: ${DB_USER}
+            password: ${DB_PASS}
+            migrations: true
+            rawAccess: true
+
+# DOCKER_HOST_IP=docker.for.mac.localhost docker-compose up -d

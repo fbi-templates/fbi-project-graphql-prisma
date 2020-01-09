@@ -15,8 +15,8 @@ GraphQL API Server and Prisma ORM project template
 
 ## Features
 
-- [prisma](https://www.prisma.io/)
-- [graphql-yoga](https://github.com/prisma/graphql-yoga)
+- [prisma v1](https://github.com/prisma/prisma)
+- [apollo-server](https://github.com/apollographql/apollo-server)
 - Code generation
 
 ## Install
@@ -30,13 +30,29 @@ GraphQL API Server and Prisma ORM project template
 
 ## Usage
 
-> Database
+### Database
 
-1. **start database service**: start a postgres database service
-1. **start database access service**: `npm run db:up`
-1. **init database**: `npm i -g prisma && npm run db:init`
+1. <details>
+    <summary>start a database service</summary>
+    start a postgres database service:
 
-> API service
+   ```bash
+   docker pull postgres
+   docker run -p 5432:5432 --name my-postgres -e POSTGRES_PASSWORD=pgpass -d postgres
+   ```
+
+   More info: https://hub.docker.com/_/postgres
+
+   </details>
+
+2. **start database access service**: `npm run db:up`
+3. **init database**: `npm i -g prisma && npm run db:init`
+
+> `DOCKER_HOST_IP=docker.for.mac.localhost` in package.json only works on macos.
+>
+> Change `docker.for.mac.localhost` with actual docker IP on other platforms.
+
+### API service
 
 1. **code generation**:
 
@@ -46,14 +62,14 @@ GraphQL API Server and Prisma ORM project template
       fbi gd
       ```
 
-   1. Edit `src/schema/schema.graphql`: remove `postsConnection` and `usersConnection` lines
-   1. Generate type-safe API resolvers:
+   2. Edit `src/schema/schema.graphql`: remove `postsConnection` and `usersConnection` lines
+   3. Generate type-safe API resolvers:
 
       ```bash
       fbi ga
       ```
 
-1. **start development server**: `fbi s`
+2. **start development server**: `fbi s`
 
 ## Tasks
 
