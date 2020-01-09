@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/neikvon/fbi-project-graphql-prisma/compare/v2.1.0...v3.0.0) (2020-01-09)
+
+
+### Features
+
+* upgrade some features ([d7b478d](https://github.com/neikvon/fbi-project-graphql-prisma/commit/d7b478d))
+
+
+### BREAKING CHANGES
+
+* Not tested for compatibility with older versions
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/neikvon/fbi-project-graphql-prisma/compare/v2.0.1...v2.1.0) (2018-11-03)
 
