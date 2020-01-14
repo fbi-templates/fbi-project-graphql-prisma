@@ -1,7 +1,7 @@
 import { join } from 'path'
 import * as url from 'url'
 import { configs } from './configs'
-import { resolvers } from './resolvers/index'
+import { resolvers } from './resolvers/'
 import { Prisma } from './generated/db'
 import { schemaLoader } from './helpers/schema-loader'
 import { logger, loggerMiddleware } from './helpers/logger'

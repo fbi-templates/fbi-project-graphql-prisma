@@ -23,47 +23,64 @@ class ResolverScaffolder {
     const keys = Object.keys(this.resolvers)
 
     // header
-    const importNames = keys.map(name => `${name}Resolvers`).join(', ')
+    const importNames =
+      keys.map(name => `${name}Resolvers`).join(', ') + ', Resolvers'
     const header = `import { ${importNames} } from '[TEMPLATE-INTERFACES-PATH]'`
     str += header
 
     // body
     for (let key of keys) {
-      str += `\n\nconst ${key}: ${key}Resolvers = {
+      if (key.endsWith('Connection')) {
+        str += `\n\nconst ${key}: ${key}Resolvers = {
+          pageInfo: (parent, args, ctx, info) => parent.pageInfo,
+          edges: (parent, args, ctx, info) => parent.edges,
+          aggregate: (parent, args, ctx, info) => parent.aggregate
+        }
+      `
+      } else {
+        str += `\n\nconst ${key}: ${key}Resolvers = {
       `
 
-      const fields = []
-      for (let field of this.resolvers[key]) {
-        const argsIn = field.args.length === 1 ? `{ ${field.args[0]} }` : 'args'
-        const argsOut = field.args.length === 1 ? field.args[0] : 'args'
-        let fieldStr = ''
+        const fields = []
+        for (let field of this.resolvers[key]) {
+          const argsIn =
+            field.args.length === 1 ? `{ ${field.args[0]} }` : 'args'
+          const argsOut = field.args.length === 1 ? field.args[0] : 'args'
+          let fieldStr = ''
 
-        if (this.rootTypes.includes(key)) {
-          if (key === 'Subscription') {
-            fieldStr = `
+          if (this.rootTypes.includes(key)) {
+            if (key === 'Subscription') {
+              fieldStr = `
             ${field.name}: {
               subscribe: (parent: any, { where }: any, ctx: any, info: any) => ctx.db.$subscribe.${field.name}(where, info).node(),
               resolve: (parent: any, { where }: any, ctx: any, info: any) => ({ mutation: where.mutation_in[0], node: parent })
               }
             `
-            // fieldStr = `${field.name}: (parent, ${argsIn}, ctx, info) => ctx.db.$subscribe.${field.name}(${argsOut}).node()`
+            } else if (key === 'Query' && field.name.endsWith('Connection')) {
+              fieldStr = `${field.name}: (parent, ${argsIn}, ctx, info) => ({
+              pageInfo: ctx.db.${field.name}(${argsOut}).pageInfo(),
+              edges: ctx.db.${field.name}(${argsOut}).edges(),
+              aggregate: ctx.db.${field.name}(${argsOut}).aggregate()
+            })
+            `
+            } else {
+              fieldStr = `${field.name}: (parent, ${argsIn}, ctx, info) => ctx.db.${field.name}(${argsOut}, info)`
+            }
           } else {
-            fieldStr = `${field.name}: (parent, ${argsIn}, ctx, info) => ctx.db.${field.name}(${argsOut}, info)`
+            const parent =
+              key.substr(0, 1).toLowerCase() + key.substr(1, key.length - 1)
+            fieldStr = `${field.name}: (parent, args, ctx, info) => ctx.db.${parent}({ id: parent.id }, info).${field.name}()`
           }
-        } else {
-          const parent =
-            key.substr(0, 1).toLowerCase() + key.substr(1, key.length - 1)
-          fieldStr = `${field.name}: (parent, args, ctx, info) => ctx.db.${parent}({ id: parent.id }, info).${field.name}()`
+          fields.push(fieldStr)
         }
-        fields.push(fieldStr)
-      }
 
-      str += `${fields.join(',\n')} }`
+        str += `${fields.join(',\n')} }`
+      }
     }
 
     // footer
     const keysStr = keys.join(',')
-    const footer = `\n\nexport const resolvers = { ${keysStr} }`
+    const footer = `\n\nexport const resolvers: Resolvers = { ${keysStr} }`
     str += footer
 
     return this.prettify(str)
@@ -134,7 +151,9 @@ class ResolverScaffolder {
       ? type.name.value
       : type.type && type.type.name
       ? type.type.name.value
-      : type.type.type.name.value
+      : type.type.type && type.type.type.name
+      ? type.type.type.name.value
+      : null
   }
 
   validType (name) {

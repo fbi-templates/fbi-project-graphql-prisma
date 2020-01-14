@@ -46,11 +46,16 @@ GraphQL API Server and Prisma ORM project template
    </details>
 
 2. **start database access service**: `npm run db:up`
-3. **init database**: `npm i -g prisma && npm run db:init`
+3. **init database**:
 
-> `DOCKER_HOST_IP=docker.for.mac.localhost` in package.json only works on macos.
->
-> Change `docker.for.mac.localhost` with actual docker IP on other platforms.
+   1. modify `dal/model.graphql`
+   2. `npm i -g prisma && npm run db:init`
+
+   > `DOCKER_HOST_IP=docker.for.mac.localhost` in package.json only works on macos.
+   >
+   > Change `docker.for.mac.localhost` with actual docker IP on other platforms.
+
+4. update datebase: `npm run db:init`
 
 ### API service
 
@@ -62,8 +67,7 @@ GraphQL API Server and Prisma ORM project template
       fbi gd
       ```
 
-   2. Edit `src/schema/schema.graphql`: remove `postsConnection` and `usersConnection` lines
-   3. Generate type-safe API resolvers:
+   2. Generate type-safe API resolvers:
 
       ```bash
       fbi ga

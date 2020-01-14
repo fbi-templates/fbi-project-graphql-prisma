@@ -1,6 +1,6 @@
 version: '3'
 services:
-  my-app-dal:
+  demo-dal:
     image: prismagraphql/prisma:${PRISMA_VERSION}
     container_name: ${CONTAINER_NAME}
     env_file: './.env'

@@ -8,15 +8,7 @@ module.exports = async (api, prettifyOptions) => {
   const resolverScaffolder = new ResolverScaffolder({
     schemaPath: cwd(api.schemaInput),
     prettifyOptions,
-    ignoreNames: [
-      'PageInfo',
-      'node',
-      'Aggregate*',
-      '*Connection',
-      '*Payload',
-      '*Edge',
-      '*PreviousValues'
-    ]
+    ignoreNames: api.resolverIgnore || []
   })
 
   const ret = resolverScaffolder.renderPrisma()
@@ -43,6 +35,8 @@ module.exports = async (api, prettifyOptions) => {
       .replace(new RegExp('\\' + sep, 'g'), '/')
   )
   ctx.logger.log(
-    `✔ API Resolvers scaffolded at ${style.green(relative(process.cwd(), outPath))}`
+    `✔ API Resolvers scaffolded at ${style.green(
+      relative(process.cwd(), outPath)
+    )}`
   )
 }

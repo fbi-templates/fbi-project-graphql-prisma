@@ -13,7 +13,15 @@ module.exports = {
       schemaOutput: './src/schema/schema.graphql',
       resolverTypesOutput: './src/generated/resolver-types.ts',
       resolversOutput: './src/resolvers',
-      cover: false
+      cover: false,
+      resolverIgnore: [
+        'PageInfo',
+        'node',
+        'Aggregate*',
+        '*Payload',
+        '*Edge',
+        '*PreviousValues'
+      ]
     },
     prettifyOptions: {
       semi: false,

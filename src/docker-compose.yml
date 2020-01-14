@@ -1,6 +1,6 @@
 version: '3'
 services:
-  ms-services:
+  demo-api:
     build: .
     container_name: ${CONTAINER_NAME}
     env_file: './.env'
